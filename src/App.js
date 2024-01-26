@@ -1,25 +1,52 @@
-import logo from './logo.svg';
 import './App.css';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Home from './components/Home';
+import Login from './components/Login';
+import { useState, useEffect } from 'react';
 
-function App() {
+export default function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+
+  useEffect(() => {
+    if (localStorage.getItem('jwt')) {
+      setLoggedIn(true);
+    }
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar bg="dark" variant="dark">
+          <Container>
+            <Navbar.Brand>Movie Tickets</Navbar.Brand>
+            <Nav className="me-auto">
+              <Nav.Link as={Link} to="/">Tickets</Nav.Link>
+              <Nav.Link as={Link} to="/admin">Admin</Nav.Link>
+              <Nav.Link as={Link} to="/cart">Cart</Nav.Link>
+            </Nav>
+            <Nav className="ms-auto">
+              <Nav.Link as={Link} to="/login">Login</Nav.Link>
+              <Nav.Link as={Link} to="/register">Register</Nav.Link>
+            </Nav>
+          </Container>
+        </Navbar>
+
+        <Routes>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/admin">
+            {/* Your admin page component goes here */}
+          </Route>
+          <Route path="/cart">
+            {/* Your cart page component goes here */}
+          </Route>
+          {/* Add more routes as needed */}
+        </Routes>
+      </div>
+    </Router>
   );
 }
-
-export default App;
