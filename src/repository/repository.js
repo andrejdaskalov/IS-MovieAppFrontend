@@ -1,4 +1,5 @@
 import axios from './axios'
+import downloader from './downloader'
 
 const Repository = {
     getTickets : async () => {
@@ -80,6 +81,16 @@ const Repository = {
             console.error(error);
         }
     },
+
+    exportTickets : async (genre) => {
+        try {
+            let result = await downloader.post('/api/tickets/export', genre);
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
 
 
 }

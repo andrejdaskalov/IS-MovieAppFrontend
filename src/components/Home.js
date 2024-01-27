@@ -1,6 +1,6 @@
 import Repository from "../repository/repository";
 import React from "react";
-import { Button, Container, Form, FormGroup } from "react-bootstrap";
+import { Button, Container, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
@@ -34,13 +34,44 @@ export default function Home() {
         });
     }
 
+    const filterTickets = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        console.log(data);
+        let filteredTickets = tickets.filter((ticket) => {
+            console.log(ticket.date + " " + data.Date);
+            return new Date(ticket.date).toDateString() === new Date(data.get('date')).toDateString();
+        });
+        setTickets(filteredTickets);
+
+    }
+
+    const handleExport = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        console.log(data);
+        Repository.exportTickets(data.get('genre')).then((result) => {
+            if (result.status !== 200) {
+                alert("Error while exporting tickets");
+            }
+            else {
+                console.log(result.data);
+                let file = new Blob([result.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                let a = document.createElement('a');
+                a.href = URL.createObjectURL(file);
+                a.download = 'tickets.xlsx';
+                a.click();
+            }
+        });
+    }
+
 
 
     useEffect(() => {
         getTickets();
         let jwt = localStorage.getItem('jwt');
-        let token = jwtDecode(jwt);
-        setAdmin(token && token.Role && token.Role === "Admin");
+        let token = jwt ? jwtDecode(jwt) : null;
+        setAdmin(token != null &&  token.Role === "Admin");
         console.log(token);
         console.log(token.Role === "Admin");
     }, []);
@@ -55,20 +86,20 @@ export default function Home() {
 
                 <Button variant="primary" type="button" onClick={() => { router('/add-ticket') }}>Add new ticket</Button>
 
-                <Form method="get" class="mb-2">
+                <Form method="post" class="mb-2" onSubmit={filterTickets}>
                     <Form.Group className="mb-3" controlId="formDate" >
                         <Form.Label>Filter</Form.Label>
-                        <Form.Control type="date" name="Date" />
+                        <Form.Control type="date" name="date" />
                     </Form.Group>
                     <Button variant="primary" type="submit">Filter</Button>
                 </Form>
                 {admin ?
                     <div>
                         <h3>Export all tickets by genre</h3>
-                        <Form method="get" class="mb-2">
+                        <Form method="post" class="mb-2" onSubmit={handleExport}>
                             <Form.Group className="mb-3" controlId="formDate" >
                                 <Form.Label>Genre</Form.Label>
-                                <Form.Control type="text" name="Genre" />
+                                <Form.Control type="text" name="genre" />
                             </Form.Group>
                             <Button variant="primary" type="submit">Export all tickets</Button>
                         </Form>

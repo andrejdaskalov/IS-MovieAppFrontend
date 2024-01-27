@@ -12,7 +12,7 @@ import EditPage from './components/EditPage';
 import { useState, useEffect } from 'react';
 
 export default function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  let [loggedIn, setLoggedIn] = useState(false);
 
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function App() {
       setLoggedIn(true);
     }
   }, []);
-  
+
   return (
     <Router>
       <div className="App">
@@ -32,19 +32,27 @@ export default function App() {
               <Nav.Link as={Link} to="/admin">Admin</Nav.Link>
               <Nav.Link as={Link} to="/cart">Cart</Nav.Link>
             </Nav>
-            <Nav className="ms-auto">
-              <Nav.Link as={Link} to="/login">Login</Nav.Link>
-              <Nav.Link as={Link} to="/register">Register</Nav.Link>
-            </Nav>
+            {!loggedIn ?
+              <Nav className="ms-auto">
+                <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                <Nav.Link as={Link} to="/register">Register</Nav.Link>
+              </Nav>
+              : <Nav className="ms-auto">
+                <Nav.Link as={Link} to="/login" onClick={() => {
+                  localStorage.removeItem('jwt');
+                  setLoggedIn(false);
+                }}>Logout</Nav.Link>
+              </Nav>
+            }
           </Container>
         </Navbar>
 
         <Routes>
-          <Route path="/" element={<Home/>}/>
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/register" element={<Register/>}/>
-          <Route path="/add-ticket" element={<AddPage/>} />
-          <Route path="/edit-ticket/:id" element={<EditPage/>} />
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/add-ticket" element={<AddPage />} />
+          <Route path="/edit-ticket/:id" element={<EditPage />} />
 
 
           <Route path="/admin">
