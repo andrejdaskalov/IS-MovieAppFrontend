@@ -3,10 +3,8 @@ import Repository from "../repository/repository";
 import { Form, Button, Container } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from "jwt-decode";
-import "core-js/stable/atob";
 
-export default function Login() {
+export default function Register() {
     let router = useNavigate();
 
     const handleSubmit = (event) => {
@@ -16,35 +14,40 @@ export default function Login() {
         data.forEach(function (value, key) {
             json[key] = value;
         });
-        Repository.login(json).then((result) => {
+        if(json.Password !== json.ConfirmPassword){
+            alert("Passwords do not match");
+            return;
+        }
+        Repository.register(json).then((result) => {
             if(result.status === 200){
-                alert("Login successful");
-                localStorage.setItem('jwt', result.data);
-                console.log(jwtDecode(localStorage.getItem('jwt')));
-                console.log(result.data);
+                alert("Registration successful");
+                localStorage.setItem('jwt', data);
                 router('/');
             }
+            console.log(data);
         });
         
     }
 
-
-
     return (
         <Container >
-            <h1>Login</h1>
+            <h1>Register</h1>
             <Form onSubmit={handleSubmit} className="justify-content-start">
                 <Form.Group className="mb-3" controlId="formBasicEmail" >
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" name="Email" placeholder="Enter email" />
+                    <Form.Control type="email" name="Email" placeholder="example@somedomain.com" />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" name="Password" placeholder="Password" />
                 </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Confirm Password</Form.Label>
+                    <Form.Control type="password" name="ConfirmPassword" placeholder="Confirm Password" />
+                </Form.Group>
                 <Button variant="primary" type="submit">
-                    Log In
+                    Register
                 </Button>
             </Form>
         </Container>

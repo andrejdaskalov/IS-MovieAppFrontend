@@ -6,6 +6,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './components/Home';
 import Login from './components/Login';
+import Register from './components/Register';
+import AddPage from './components/AddPage';
+import EditPage from './components/EditPage';
 import { useState, useEffect } from 'react';
 
 export default function App() {
@@ -17,6 +20,7 @@ export default function App() {
       setLoggedIn(true);
     }
   }, []);
+  
   return (
     <Router>
       <div className="App">
@@ -38,6 +42,11 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/login" element={<Login/>}/>
+          <Route path="/register" element={<Register/>}/>
+          <Route path="/add-ticket" element={<AddPage/>} />
+          <Route path="/edit-ticket/:id" element={<EditPage/>} />
+
+
           <Route path="/admin">
             {/* Your admin page component goes here */}
           </Route>
