@@ -65,6 +65,20 @@ export default function Home() {
         });
     }
 
+    const handleAddToCart = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        console.log(data);
+        Repository.addToCart(data.get('id'), data.get('quantity')).then((result) => {
+            if (result.status !== 200) {
+                alert("Error while adding to cart");
+            }
+            else {
+                alert("Added to cart");
+            }
+        });
+    }
+
 
 
     useEffect(() => {
@@ -113,7 +127,7 @@ export default function Home() {
                                 <h3>{ticket.movieTitle}</h3>
                             </div>
                             <div class="card-body">
-                                <p class="font-weight-bold">Price: {ticket.Price}</p>
+                                <p class="font-weight-bold">Price: {ticket.price}</p>
                                 <p>Date: {new Date(ticket.date).toDateString()}</p>
                                 <p>Seat #: {ticket.seat}</p>
                             </div>
@@ -126,9 +140,9 @@ export default function Home() {
                                     }}>Delete</Button>
                                 </div>
                                 <div>
-                                    <Form method="post" action="/api/cart/add">
-                                        <input type="hidden" name="id" value={ticket.Id} />
-                                        <input class="form-control" type="number" min="1" max="10" name="quantity" value="1" />
+                                    <Form method="post" onSubmit={handleAddToCart}>
+                                        <input type="hidden" name="id" value={ticket.id} />
+                                        <input class="form-control" type="number" min="1" max="10" name="quantity" defaultValue="1" />
                                         <Button variant="success" type="submit">Add to Cart</Button>
                                     </Form>
                                 </div>

@@ -90,7 +90,78 @@ const Repository = {
         catch (error) {
             console.error(error);
         }
+    },
+
+    getCart : async () => {
+        try {
+            let result = await axios.get('/api/cart');
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    },
+
+    addToCart : async (id, amount) => {
+        try {
+            let result = await axios.post('/api/cart/' + id.toString(), amount);
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    },
+
+    removeFromCart : async (id) => {
+        try {
+            let result = await axios.delete('/api/cart/' + id);
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    },
+
+    removeAllFromCart : async () => {
+        try {
+            let result = await axios.delete('/api/cart/removeAll');
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    },
+
+    updateAmount : async (id, amount) => {
+        try {
+            let result = await axios.put('/api/cart/' + id, amount);
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    },
+
+    payment : async (data) => {
+        try {
+            let result = await axios.post('/api/payment/create-checkout-session', data);
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    },
+
+    finishOrder : async () => {
+        try {
+            let result = await axios.get('/api/payment/finish-order');
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
     }
+
 
 
 }

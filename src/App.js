@@ -10,6 +10,8 @@ import Register from './components/Register';
 import AddPage from './components/AddPage';
 import EditPage from './components/EditPage';
 import { useState, useEffect } from 'react';
+import Cart from './components/Cart';
+import ThankYouPage from './components/ThankYou';
 
 export default function App() {
   let [loggedIn, setLoggedIn] = useState(false);
@@ -53,14 +55,14 @@ export default function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/add-ticket" element={<AddPage />} />
           <Route path="/edit-ticket/:id" element={<EditPage />} />
+          <Route path="/thank-you" element={< ThankYouPage />} />
+
 
 
           <Route path="/admin">
             {/* Your admin page component goes here */}
           </Route>
-          <Route path="/cart">
-            {/* Your cart page component goes here */}
-          </Route>
+          <Route path="/cart" element={<Cart />} />
           {/* Add more routes as needed */}
         </Routes>
       </div>
