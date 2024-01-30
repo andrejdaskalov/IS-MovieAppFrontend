@@ -12,6 +12,7 @@ import EditPage from './components/EditPage';
 import { useState, useEffect } from 'react';
 import Cart from './components/Cart';
 import ThankYouPage from './components/ThankYou';
+import OrdersListPage from './components/OrdersPage';
 
 export default function App() {
   let [loggedIn, setLoggedIn] = useState(false);
@@ -33,6 +34,7 @@ export default function App() {
               <Nav.Link as={Link} to="/">Tickets</Nav.Link>
               <Nav.Link as={Link} to="/admin">Admin</Nav.Link>
               <Nav.Link as={Link} to="/cart">Cart</Nav.Link>
+              <Nav.Link as={Link} to="/orders">Orders</Nav.Link>
             </Nav>
             {!loggedIn ?
               <Nav className="ms-auto">
@@ -63,7 +65,8 @@ export default function App() {
             {/* Your admin page component goes here */}
           </Route>
           <Route path="/cart" element={<Cart />} />
-          {/* Add more routes as needed */}
+          <Route path="/orders" element={<OrdersListPage />} />
+          
         </Routes>
       </div>
     </Router>

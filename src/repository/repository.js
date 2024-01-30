@@ -160,7 +160,27 @@ const Repository = {
         catch (error) {
             console.error(error);
         }
-    }
+    },
+
+    getOrders : async () => {
+        try {
+            let result = await axios.get('/api/orders');
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    },
+
+    createInvoice : async (id) => {
+        try {
+            let result = await downloader.get('/api/orders/' + id);
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    },
 
 
 
