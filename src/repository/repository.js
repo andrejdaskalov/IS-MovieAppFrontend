@@ -1,5 +1,6 @@
 import axios from './axios'
 import downloader from './downloader'
+import uploader from './uploader'
 
 const Repository = {
     getTickets : async () => {
@@ -181,6 +182,47 @@ const Repository = {
             console.error(error);
         }
     },
+
+    getUsers : async () => {
+        try {
+            let result = await axios.get('/api/admin');
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    },
+
+    makeAdmin : async (id) => {
+        try {
+            let result = await axios.post('/api/admin/makeadmin', id.toString());
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    },
+
+    removeAdmin : async (id) => {
+        try {
+            let result = await axios.post('/api/admin/removeadmin', id.toString());
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    },
+
+    uploadFile : async (data) => {
+        try {
+            let result = await uploader.post('/api/admin/import', data);
+            return result;
+        }
+        catch (error) {
+            console.error(error);
+        }
+    }
+
 
 
 

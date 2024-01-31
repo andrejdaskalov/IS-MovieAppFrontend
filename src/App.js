@@ -13,6 +13,7 @@ import { useState, useEffect } from 'react';
 import Cart from './components/Cart';
 import ThankYouPage from './components/ThankYou';
 import OrdersListPage from './components/OrdersPage';
+import AdminPage from './components/AdminPage';
 
 export default function App() {
   let [loggedIn, setLoggedIn] = useState(false);
@@ -61,9 +62,7 @@ export default function App() {
 
 
 
-          <Route path="/admin">
-            {/* Your admin page component goes here */}
-          </Route>
+          <Route path="/admin" element={<AdminPage />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/orders" element={<OrdersListPage />} />
           
