@@ -39,8 +39,8 @@ function OrdersListPage() {
 
     return (
         <div>
-            <h1>Orders List</h1>
             <Container>
+                <h1>Orders List</h1>
                 <table className='w-100'>
                     <thead>
                         <tr>

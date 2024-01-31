@@ -12,7 +12,7 @@ export default function Home() {
 
     const getTickets = () => {
         Repository.getTickets().then((result) => {
-            if (result.status !== 200) {
+            if (result?.status !== 200) {
                 alert("Error while loading tickets");
                 return;
             }
@@ -25,7 +25,7 @@ export default function Home() {
 
     const deleteTicket = (id) => {
         Repository.deleteTicket(id).then((result) => {
-            if (result.status !== 200) {
+            if (result?.status !== 200) {
                 alert("Error while deleting ticket");
             }
             else {
@@ -85,7 +85,7 @@ export default function Home() {
         getTickets();
         let jwt = localStorage.getItem('jwt');
         let token = jwt ? jwtDecode(jwt) : null;
-        setAdmin(token != null &&  token.Role === "Admin");
+        setAdmin(token != null && token['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] === "Admin");
         console.log(token);
         console.log(token.Role === "Admin");
     }, []);
@@ -96,19 +96,19 @@ export default function Home() {
 
     return (
         <>
-            <div class="container">
+            <Container className="mt-5">
 
                 <Button variant="primary" type="button" onClick={() => { router('/add-ticket') }}>Add new ticket</Button>
 
-                <Form method="post" class="mb-2" onSubmit={filterTickets}>
+                <Form method="post" class="mt-4" onSubmit={filterTickets}>
                     <Form.Group className="mb-3" controlId="formDate" >
-                        <Form.Label>Filter</Form.Label>
+                        <Form.Label>Filter by ticket date</Form.Label>
                         <Form.Control type="date" name="date" />
                     </Form.Group>
                     <Button variant="primary" type="submit">Filter</Button>
                 </Form>
                 {admin ?
-                    <div>
+                    <div className="mt-4">
                         <h3>Export all tickets by genre</h3>
                         <Form method="post" class="mb-2" onSubmit={handleExport}>
                             <Form.Group className="mb-3" controlId="formDate" >
@@ -119,42 +119,43 @@ export default function Home() {
                         </Form>
                     </div> : null
                 }
-
-                {tickets.map((ticket) => {
-                    return (
-                        <div class="card mb-3" key={ticket.id}>
-                            <div class="card-header">
-                                <h3>{ticket.movieTitle}</h3>
-                            </div>
-                            <div class="card-body">
-                                <p class="font-weight-bold">Price: {ticket.price}</p>
-                                <p>Date: {new Date(ticket.date).toDateString()}</p>
-                                <p>Seat #: {ticket.seat}</p>
-                            </div>
-                            <div class="card-footer d-flex justify-content-between align-items-start">
-                                <div>
-                                    <Button variant="outline-primary" className="me-2"
-                                        onClick={() => { router('/edit-ticket/' + ticket.id) }}>Edit</Button>
-                                    <Button variant="danger" onClick={() => {
-                                        deleteTicket(ticket.id);
-                                    }}>Delete</Button>
+                <div className="mt-5">
+                    {tickets.map((ticket) => {
+                        return (
+                            <div class="card mb-3" key={ticket.id}>
+                                <div class="card-header">
+                                    <h3>{ticket.movieTitle}</h3>
                                 </div>
-                                <div>
-                                    <Form method="post" onSubmit={handleAddToCart}>
-                                        <input type="hidden" name="id" value={ticket.id} />
-                                        <input class="form-control" type="number" min="1" max="10" name="quantity" defaultValue="1" />
-                                        <Button variant="success" type="submit">Add to Cart</Button>
-                                    </Form>
+                                <div class="card-body">
+                                    <p class="font-weight-bold">Price: {ticket.price}</p>
+                                    <p>Date: {new Date(ticket.date).toDateString()}</p>
+                                    <p>Seat #: {ticket.seat}</p>
+                                </div>
+                                <div class="card-footer d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <Button variant="outline-primary" className="me-2"
+                                            onClick={() => { router('/edit-ticket/' + ticket.id) }}>Edit</Button>
+                                        <Button variant="danger" onClick={() => {
+                                            deleteTicket(ticket.id);
+                                        }}>Delete</Button>
+                                    </div>
+                                    <div>
+                                        <Form method="post" onSubmit={handleAddToCart}>
+                                            <input type="hidden" name="id" value={ticket.id} />
+                                            <input className="form-control " type="number" min="1" max="10" name="quantity" defaultValue="1" />
+                                            <Button className="my-1" variant="success" type="submit">Add to Cart</Button>
+                                        </Form>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )
+                        )
 
-                }
-                )}
+                    }
+                    )}
+                </div>
 
 
-            </div>
+            </Container>
         </>
     );
 }

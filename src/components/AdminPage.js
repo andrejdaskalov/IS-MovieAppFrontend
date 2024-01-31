@@ -41,7 +41,7 @@ const UserTable = () => {
         try {
             Repository.removeAdmin(id).then((result) => {
                 if (result?.status !== 200) {
-                    console.error("Error while removing admin "+result);
+                    console.error("Error while removing admin " + result);
                     return;
                 }
                 console.log(result);
@@ -87,7 +87,7 @@ const UserTable = () => {
                                 <td>{user.role}</td>
                                 <td>
                                     {user.role === 'Admin' ? (
-                                        <Button onClick={() => removeAdmin(user.username)}>
+                                        <Button onClick={() => removeAdmin(user.username)} variant='danger'>
                                             Remove admin
                                         </Button>
                                     ) : (
@@ -102,13 +102,16 @@ const UserTable = () => {
                 </table>
             </Container>
 
-            <Form onSubmit={handleFileUpload}>
-                <Form.Group controlId="fileUpload">
-                    <Form.Label>Upload File</Form.Label>
-                    <Form.Control type="file" />
-                </Form.Group>
-                <Button type="submit">Upload</Button>
-            </Form>
+            <hr className='hr'></hr>
+            <Container className='mt-3'>
+                <Form onSubmit={handleFileUpload} className=''>
+                    <Form.Group controlId="fileUpload" className='mb-3'>
+                        <Form.Label>Import Users from .xlsx file</Form.Label>
+                        <Form.Control type="file" />
+                    </Form.Group>
+                    <Button type="submit">Import</Button>
+                </Form>
+            </Container>
         </>
     );
 };

@@ -76,8 +76,8 @@ export default function Cart() {
 
     return (
         <>
-            <h1 className="h1 mx-5">Your cart</h1>
             <Container>
+                <h1 className="h1">Your cart</h1>
                 <table class="table">
                     <thead>
                         <tr>
@@ -115,18 +115,6 @@ export default function Cart() {
                     </tbody>
                 </table>
                 <h2>Total: {cart.totalPrice}</h2>
-                {/* <Button variant="primary" href="/checkout">Checkout</Button> */}
-                {/* <form method="POST" action="https://localhost:5001/api/payment">
-                    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-                        data-key="pk_test_51NAbKcKkVIc94TENpt8aUbX2uEJKDAM2EFisRGp0zoiDDTqUJZS7YqRoZf3xqI9Si3xjSem3wtuob6x6k4Fuq1FI00zdBUFvFK"
-                        data-amount={cart?.totalPrice}
-                        data-name="Movie ticket Store"
-                        data-description={`${cart?.orderItems?.length} items`}
-                        data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
-                        data-locale="en"
-                        data-label={`Pay ${cart.totalPrice}`}>
-                    </script>
-                </form> */}
 
                 {clientSecret && (
                     <EmbeddedCheckoutProvider
